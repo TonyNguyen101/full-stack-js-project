@@ -1,19 +1,38 @@
-<% include ../partials/header %>
+<% include ../partials/headermain %>
 
-<h1>Search Results Index page</h1>
+<div class="container-fluid">
 
+<thead>
+<h1>Search for Recipes <small>and add them to your notebook</small>	</h1>
+</thead>
+
+<form class="form-inline" id="searchBigOvenForm">
+  <div class="form-group">
+    <label for="searchTerm">
+    	<input type="text" class="form-control" id="searchTerm" placeholder="search" autofocus>
+    </label>
+  </div>
+  <button type="submit" class="btn btn-default">Search</button>
+</form>
+
+<table class="table table-hover">
+<tbody>
 <% bigOvenDataArray.Results.forEach(function(recipe){ %>
 	<% if (recipe.ImageURL !== "http://redirect.bigoven.com/pics/recipe-no-image.jpg"){ %>
-		 <%= recipe.RecipeID %>
-		<%= recipe.Title %>
-		<img src="<%= recipe.ImageURL120 %>" alt="">
-		</br>
+
+	<tr>	
+		<td><img src="<%= recipe.ImageURL120 %>" alt=""></td>
+		<td><%= recipe.RecipeID %></td>
+		<td><%= recipe.Title %></td>
+	</tr>
+	
 	<% } %>
 <% }) %>
+</tbody>
+</table>
 
 
-
-
+</div>
 
 
 <% include ../partials/footer %>

@@ -23,8 +23,13 @@ app.get('/', function (req, res){
 
 //INDEX
 app.get('/recipes', function (req, res){
+	res.render('recipes/index'); 
+});	
+
+//SEARCH BIGOVEN
+app.post('/recipes', function (req, res){
+	var searchTerm = req.body.term.searchTerm;
 	var url = "http://api.bigoven.com/recipes?pg=1&rpp=25&title_kw=";
-	var searchTerm = "salmon";
 	var apiKey = "&api_key=dvxK85et7PRw0l0hH7I3D9R2cFMvdPop";
 	request({
 		type: 'GET',
@@ -36,20 +41,21 @@ app.get('/recipes', function (req, res){
 	    console.log("Error! Request failed - " + err);
 	  } else if (!err && response.statusCode === 200) {
 	  	var bigOvenDataArray = body;
-	  	res.render('recipes/index', {bigOvenDataArray:bigOvenDataArray});
-	  	/*res.send(bigOvenDataArray);*/
-	  }
-	});  
-});	
-
-
-
+	  	console.log(bigOvenDataArray);
+	  	/*res.render('recipes/index', {bigOvenDataArray:bigOvenDataArray});*/
+	  	res.send(bigOvenDataArray);
+		}
+	});		
+});
 
 //NEW
 
 //CREATE
 
-//SHOW
+//SHOW RECIPE NOT IN DB
+
+//SHOW RECIPE IN DB
+
 
 //EDIT
 
