@@ -1,4 +1,17 @@
 $(function () {
+		
+	//Search Results HTML Function
+	function recipeHtml (recipe){
+		return	'<tr>	<td><img src="<%=' + 
+						recipe.ImageURL120 + 
+						'%>" alt=""></td><td><%=' + 
+						recipe.RecipeID + 
+						'%></td><td><%=' + 
+						recipe.Title + 
+						'%></td></tr>';
+	}
+
+
 	//The BigOven Search Query
 	$('#searchBigOvenForm').submit(function(event){
 		event.preventDefault();
@@ -12,32 +25,16 @@ $(function () {
 			url: '/recipes',
 			data: data,
 			dataType: 'json'
-		})
-		.done(function(returnData){
-
+		}).done(function(returnData){
+			returnData.Results.forEach(function(recipe){ 
+				if (recipe.ImageURL !== "http://redirect.bigoven.com/pics/recipe-no-image.jpg") {
+					var newRecipe = recipeHtml(recipe);
+					console.log(newRecipe);
+					$('tbody').append(newRecipe);	
+				}
+			});
 		});
-	});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	});	
 
 
 

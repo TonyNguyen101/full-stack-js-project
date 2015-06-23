@@ -17,3 +17,18 @@
 
 
 <% include ../partials/footer %>
+
+
+
+
+
+
+<% bigOvenDataArray.Results.forEach(function(recipe){ %>
+	<% if (recipe.ImageURL !== "http://redirect.bigoven.com/pics/recipe-no-image.jpg"){ %>
+	<tr>	
+		<td><img src="<%= recipe.ImageURL120 %>" alt=""></td>
+		<td><%= recipe.RecipeID %></td>
+		<td><%= recipe.Title %></td>
+	</tr>	
+	<% } %>
+<% }) %>

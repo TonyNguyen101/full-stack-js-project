@@ -42,6 +42,7 @@ app.post('/recipes', function (req, res){
 	  } else if (!err && response.statusCode === 200) {
 	  	var bigOvenDataArray = body;
 	  	console.log(bigOvenDataArray);
+	  	console.log("hello");
 	  	/*res.render('recipes/index', {bigOvenDataArray:bigOvenDataArray});*/
 	  	res.send(bigOvenDataArray);
 		}
