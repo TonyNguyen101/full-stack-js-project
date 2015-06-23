@@ -2,13 +2,13 @@ $(function () {
 		
 	//Search Results HTML Function
 	function recipeHtml (recipe){
-		return	'<tr>	<td><img src="<%=' + 
+		return	'<tr>	<td><img src=' + 
 						recipe.ImageURL120 + 
-						'%>" alt=""></td><td><%=' + 
+						' alt=""></td><td>' + 
 						recipe.RecipeID + 
-						'%></td><td><%=' + 
+						'</td><td>' + 
 						recipe.Title + 
-						'%></td></tr>';
+						'</td></tr>';
 	}
 
 
@@ -26,10 +26,13 @@ $(function () {
 			data: data,
 			dataType: 'json'
 		}).done(function(returnData){
+			//Remove the previous search results
+			$('tr').remove();
+			//Iterate of the returned array from BigOven
 			returnData.Results.forEach(function(recipe){ 
 				if (recipe.ImageURL !== "http://redirect.bigoven.com/pics/recipe-no-image.jpg") {
 					var newRecipe = recipeHtml(recipe);
-					console.log(newRecipe);
+					//add to the table body
 					$('tbody').append(newRecipe);	
 				}
 			});
