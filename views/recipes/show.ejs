@@ -1,0 +1,19 @@
+<% include ../partials/header %>
+
+<%= bigOvenData.Title %>
+</br>
+<% bigOvenData.Ingredients.forEach(function(ingredient){ %>
+	
+	<%= ingredient.DisplayQuantity %>
+	<% if (ingredient.Unit !== null){ %>
+		<%= ingredient.Unit %>	
+	<% } %>
+	<%= ingredient.Name %>
+	</br>
+<% }) %>
+</br>
+<%= bigOvenData.Instructions %>
+</br>
+
+
+<% include ../partials/footer %>
