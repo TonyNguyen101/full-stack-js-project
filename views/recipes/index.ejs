@@ -1,10 +1,10 @@
 <% include ../partials/header %>
 
-<h1>Index page</h1>
+<h1>Search Results Index page</h1>
 
 <% bigOvenDataArray.Results.forEach(function(recipe){ %>
 	<% if (recipe.ImageURL !== "http://redirect.bigoven.com/pics/recipe-no-image.jpg"){ %>
-		<%= recipe.RecipeID %>
+		 <%= recipe.RecipeID %>
 		<%= recipe.Title %>
 		<img src="<%= recipe.ImageURL120 %>" alt="">
 		</br>
