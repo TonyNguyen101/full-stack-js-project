@@ -58,9 +58,7 @@ app.get('/recipes/:id/show', function (req, res){
 	function (err, response, body){
 		if (err) {
 	    console.log("Error! Request failed - " + err);
-	  } else if (!err && response.statusCode === 200) {
-	  	console.log(body);
-/*	  	var bigOvenRecipe = JSON.parse(body);*/
+	  } else if (!err && response.statusCode === 200) { 
 	  	res.render('recipes/show', {bigOvenRecipe: body});
 		}
 	});		
@@ -70,12 +68,12 @@ app.get('/recipes/:id/show', function (req, res){
 //NEW
 
 //CREATE
-/*app.post('/recipes/:id', function (req, res){
+/*app.post('/recipes', function (req, res){
 	db.Recipe.create(req.body.recipe, function (err, ))
 });*/
 //SHOW RECIPE IN DB
 
-
+ 
 //EDIT
 
 //UPDATE
