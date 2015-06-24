@@ -2,7 +2,7 @@ $(function () {
 		
 	//Search Results HTML Function
 	function recipeHtml (recipe){
-		return	'<tr data-url=/recipes/' + recipe.RecipeID + '/show>	<td><img src=' + 
+		return	'<tr data-url=/search/' + recipe.RecipeID + '/show>	<td><img src=' + 
 						recipe.ImageURL120 + 
 						' alt=""></td><td>' + 
 						recipe.RecipeID + 
@@ -21,7 +21,7 @@ $(function () {
 		//Send the search term to BigOven and receive it
 		$.ajax({
 			type: 'POST',
-			url: '/recipes',
+			url: '/search',
 			data: data,
 			dataType: 'json'
 		}).done(function(returnData){

@@ -21,13 +21,13 @@ app.get('/', function (req, res){
 	res.redirect('/recipes');
 });
 
-//INDEX
-app.get('/recipes', function (req, res){
-	res.render('recipes/index'); 
+//SEARCH INDEX
+app.get('/search', function (req, res){
+	res.render('search/index'); 
 });	
 
 //SEARCH BIGOVEN w/AJAX from Index page
-app.post('/recipes', function (req, res){
+app.post('/search', function (req, res){
 	var searchTerm = req.body.term.searchTerm;
 	var url = "http://api.bigoven.com/recipes?pg=1&rpp=25&title_kw=";
 	var apiKey = "&api_key=dvxK85et7PRw0l0hH7I3D9R2cFMvdPop";
@@ -46,7 +46,7 @@ app.post('/recipes', function (req, res){
 });
 
 //SHOW RECIPE NOT IN DB
-app.get('/recipes/:id/show', function (req, res){
+app.get('/search/:id/show', function (req, res){
 	var recipeId = req.params.id;
 	var url = "http://api.bigoven.com/recipe/";
 	var apiKey = "dvxK85et7PRw0l0hH7I3D9R2cFMvdPop";
