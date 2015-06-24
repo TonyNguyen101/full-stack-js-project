@@ -4,9 +4,10 @@
 
 
 
-<%= bigOvenData.Title %>
+<img height="250" width="250" src="<%= bigOvenRecipe.ImageURL %>" alt="">	
+<%= bigOvenRecipe.Title %>
 </br>
-<% bigOvenData.Ingredients.forEach(function(ingredient){ %>
+<% bigOvenRecipe.Ingredients.forEach(function(ingredient){ %>
 	
 	<%= ingredient.DisplayQuantity %>
 	<% if (ingredient.Unit !== null){ %>
@@ -16,8 +17,18 @@
 	</br>
 <% }) %>
 </br>
-<%= bigOvenData.Instructions %>
+<%= bigOvenRecipe.Instructions %>
 </br>
+
+
+<form action="/recipes/<%= bigOvenRecipe.RecipeID %>" method="POST">
+	<input type="text" name="recipe[image]" value="<%= bigOvenRecipe.ImageURL %>">
+	<input type="text" name="recipe[title]" value="<%= bigOvenRecipe.Title %>">
+	<input type="text" name="recipe[ingredients]" value="<%= bigOvenRecipe.Ingredients %>">
+	<input type="text" name="recipe[instructions]" value="<%= bigOvenRecipe.Instructions %>">
+
+	<input type="submit">
+</form>
 
 
 <% include ../partials/footer %>

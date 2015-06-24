@@ -34,8 +34,8 @@ $(function () {
 					//add to the table body
 					$('tbody').append(newRecipe);	
 					//Place a link click listener on each recipe row
-					$('tr').click(function(){
-						window.document.location = $(this).data("url");
+			$('tr').click(function(){
+				window.document.location = $(this).data("url");
 					});
 				}
 			});

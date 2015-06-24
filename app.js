@@ -4,7 +4,7 @@ var express 					= require('express'),
     methodOverride 		= require("method-override"),
     session 					= require("cookie-session"),
     morgan 						= require("morgan"),
-    /*db 								= require("./models"),*/
+    db 								= require("./models"),
     request						= require("request");
 /*    loginMiddleware 	= require("./middleware/loginHelper"),
     routeMiddleware 	= require("./middleware/routeHelper");
@@ -26,7 +26,7 @@ app.get('/recipes', function (req, res){
 	res.render('recipes/index'); 
 });	
 
-//SEARCH BIGOVEN
+//SEARCH BIGOVEN w/AJAX from Index page
 app.post('/recipes', function (req, res){
 	var searchTerm = req.body.term.searchTerm;
 	var url = "http://api.bigoven.com/recipes?pg=1&rpp=25&title_kw=";
@@ -45,10 +45,6 @@ app.post('/recipes', function (req, res){
 	});		
 });
 
-//NEW
-
-//CREATE
-
 //SHOW RECIPE NOT IN DB
 app.get('/recipes/:id/show', function (req, res){
 	var recipeId = req.params.id;
@@ -64,13 +60,19 @@ app.get('/recipes/:id/show', function (req, res){
 	    console.log("Error! Request failed - " + err);
 	  } else if (!err && response.statusCode === 200) {
 	  	console.log(body);
-	  	/*res.render('recipes/show', {recipe: body});*/
-	  	res.send(body);
+/*	  	var bigOvenRecipe = JSON.parse(body);*/
+	  	res.render('recipes/show', {bigOvenRecipe: body});
 		}
 	});		
 	
 });
 
+//NEW
+
+//CREATE
+/*app.post('/recipes/:id', function (req, res){
+	db.Recipe.create(req.body.recipe, function (err, ))
+});*/
 //SHOW RECIPE IN DB
 
 
