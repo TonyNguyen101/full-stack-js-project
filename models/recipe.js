@@ -6,7 +6,7 @@ var recipeSchema = new mongoose.Schema({
 	instructions: String,
 	ingredients: [{
 		unit: String,
-		quantity: Number,
+		displayQuantity: Number,
 		name: String		
 	}],
 	user: {

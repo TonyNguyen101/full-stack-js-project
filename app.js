@@ -26,7 +26,7 @@ app.get('/search', function (req, res){
 	res.render('search/index'); 
 });	
 
-//SEARCH BIGOVEN w/AJAX from Index page
+//SEARCH BIGOVEN w/AJAX from Search Index page
 app.post('/search', function (req, res){
 	var searchTerm = req.body.term.searchTerm;
 	var url = "http://api.bigoven.com/recipes?pg=1&rpp=25&title_kw=";
@@ -45,7 +45,7 @@ app.post('/search', function (req, res){
 	});		
 });
 
-//SHOW RECIPE NOT IN DB
+//SEARCH SHOW RECIPE FROM BIGOVEN
 app.get('/search/:id/show', function (req, res){
 	var recipeId = req.params.id;
 	var url = "http://api.bigoven.com/recipe/";
@@ -59,21 +59,38 @@ app.get('/search/:id/show', function (req, res){
 		if (err) {
 	    console.log("Error! Request failed - " + err);
 	  } else if (!err && response.statusCode === 200) { 
-	  	res.render('recipes/show', {bigOvenRecipe: body});
+	  	//Make an recipe object and stuff it with filtered data from Big Oven
+	  	//TODO Wrap all of this into one object creation?
+	  	var bigOvenRecipeAbridged = {};
+	  	bigOvenRecipeAbridged.title = body.Title;
+	  	bigOvenRecipeAbridged.image = body.ImageURL;
+	  	bigOvenRecipeAbridged.instructions = body.Instructions;
+	  	//TODO Map over the ingredients array to extract
+	  	bigOvenRecipeAbridged.ingredients = body.Ingredients.map(function(ingredient){
+	  		return {
+	  			displayQuantity: 	ingredient.DisplayQuantity,
+	  			unit: 						ingredient.Unit,
+	  			name: 						ingredient.Name
+	  		};
+	  	});
+	  	res.render('search/show', {bigOvenRecipeAbridged: bigOvenRecipeAbridged});
 		}
-	});		
-	
+	});			
 });
 
-//NEW
+//CREATE RECIPE FROM SEARCH RESULT
+app.post('/recipes', function (req, res){
+	db.Recipe.create(req.body.recipe, function (err, recipe){
+		//TODO redirect to user's page with her recipes, /user:id
+		res.redirect('/recipes');
+	});
+});
 
-//CREATE
-/*app.post('/recipes', function (req, res){
-	db.Recipe.create(req.body.recipe, function (err, ))
-});*/
-//SHOW RECIPE IN DB
+//RECIPES INDEX, ALL IN DB
 
- 
+//SHOW ONE RECIPE IN DB, W/ AJAX to CREATE COMMENTS
+
+//NEW 
 //EDIT
 
 //UPDATE

@@ -4,30 +4,29 @@
 
 
 
-<img height="250" width="250" src="<%= bigOvenRecipe.ImageURL %>" alt="">	
-<%= bigOvenRecipe.Title %>
+<img height="250" width="250" src="<%= bigOvenRecipeAbridged.image %>" alt="">	
+<%= bigOvenRecipeAbridged.title %>
 </br>
-<% bigOvenRecipe.Ingredients.forEach(function(ingredient){ %>
+<% bigOvenRecipeAbridged.ingredients.forEach(function(ingredient){ %>
 	
-	<%= ingredient.DisplayQuantity %>
-	<% if (ingredient.Unit !== null){ %>
-		<%= ingredient.Unit %>	
+	<%= ingredient.displayQuantity %>
+	<% if (ingredient.unit !== null){ %>
+		<%= ingredient.unit %>	
 	<% } %>
-	<%= ingredient.Name %>
+	<%= ingredient.name %>
 	</br>
 <% }) %>
 </br>
-<%= bigOvenRecipe.Instructions %>
+<%= bigOvenRecipeAbridged.instructions %>
 </br>
 
 
-<form action="/recipes/<%= bigOvenRecipe.RecipeID %>" method="POST">
-	<input type="text" name="recipe[image]" value="<%= bigOvenRecipe.ImageURL %>">
-	<input type="text" name="recipe[title]" value="<%= bigOvenRecipe.Title %>">
-	<input type="text" name="recipe[ingredients]" value="<%= bigOvenRecipe.Ingredients %>">
-	<input type="text" name="recipe[instructions]" value="<%= bigOvenRecipe.Instructions %>">
-
-	<input type="submit">
+<form action="/recipes" method="POST">
+	<input type="text" name="recipe[image]" value="<%= bigOvenRecipeAbridged.image %>">
+	<input type="text" name="recipe[title]" value="<%= bigOvenRecipeAbridged.title %>">
+	<input type="text" name="recipe[ingredients]" value="<%= bigOvenRecipeAbridged.ingredients %>">
+	<input type="text" name="recipe[instructions]" value="<%= bigOvenRecipeAbridged.instructions %>">
+	<button type="submit" class="btn btn-default">Save</button>
 </form>
 
 

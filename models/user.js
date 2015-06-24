@@ -12,6 +12,8 @@ var userSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	bio: String,
+	picture: String,
 	recipes: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Recipe"
