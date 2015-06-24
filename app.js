@@ -40,11 +40,7 @@ app.post('/recipes', function (req, res){
 		if (err) {
 	    console.log("Error! Request failed - " + err);
 	  } else if (!err && response.statusCode === 200) {
-	  	var bigOvenDataArray = body;
-	  	console.log(bigOvenDataArray);
-	  	console.log("hello");
-	  	/*res.render('recipes/index', {bigOvenDataArray:bigOvenDataArray});*/
-	  	res.send(bigOvenDataArray);
+	  	res.send(body);
 		}
 	});		
 });
@@ -54,6 +50,26 @@ app.post('/recipes', function (req, res){
 //CREATE
 
 //SHOW RECIPE NOT IN DB
+app.get('/recipes/:id/show', function (req, res){
+	var recipeId = req.params.id;
+	var url = "http://api.bigoven.com/recipe/";
+	var apiKey = "dvxK85et7PRw0l0hH7I3D9R2cFMvdPop";
+	request({
+		type: 'GET',
+		json: true,
+		uri: url + recipeId + "?api_key=" + apiKey
+	}, 
+	function (err, response, body){
+		if (err) {
+	    console.log("Error! Request failed - " + err);
+	  } else if (!err && response.statusCode === 200) {
+	  	console.log(body);
+	  	/*res.render('recipes/show', {recipe: body});*/
+	  	res.send(body);
+		}
+	});		
+	
+});
 
 //SHOW RECIPE IN DB
 

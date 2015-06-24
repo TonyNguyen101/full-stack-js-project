@@ -2,7 +2,7 @@ $(function () {
 		
 	//Search Results HTML Function
 	function recipeHtml (recipe){
-		return	'<tr>	<td><img src=' + 
+		return	'<tr data-url=/recipes/' + recipe.RecipeID + '/show>	<td><img src=' + 
 						recipe.ImageURL120 + 
 						' alt=""></td><td>' + 
 						recipe.RecipeID + 
@@ -10,7 +10,6 @@ $(function () {
 						recipe.Title + 
 						'</td></tr>';
 	}
-
 
 	//The BigOven Search Query
 	$('#searchBigOvenForm').submit(function(event){
@@ -34,6 +33,10 @@ $(function () {
 					var newRecipe = recipeHtml(recipe);
 					//add to the table body
 					$('tbody').append(newRecipe);	
+					//Place a link click listener on each recipe row
+					$('tr').click(function(){
+						window.document.location = $(this).data("url");
+					});
 				}
 			});
 		});
