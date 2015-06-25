@@ -8,11 +8,12 @@ $(function () {
 	}
 
 
-
+	//Captures the comments and packages 
 	$('#newCommentForm').click(function(event){
 		event.preventDefault();
 		var body = $('#newComment').val();
 		var data = {comment: {body: body}};
+
 
 		$.ajax({
 			type: 'POST',
@@ -20,7 +21,7 @@ $(function () {
 			data: data,
 		}).done(function(returnData){
 			var newComment = commentHtml(returnData);
-			
+			$('tbody').prepend(newComment);
 		});
 
 	});
