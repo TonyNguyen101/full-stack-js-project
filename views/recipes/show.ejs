@@ -35,9 +35,8 @@
 <form id="newCommentForm" action="/recipes/<%= recipe._id %>/comments" method="POST">
 	<div class="form-group">
 		<label for="comment[body]"></label>
-      <input type="text" id="recipeId" value="<%= recipe._id %>">
-      <input type="text" id="newComment" name="comment[body]" autofocus>
-      <!-- <textarea name="comment[body]" id="comment[body]" cols="40" rows="5" autofocus></textarea> -->
+      <input type="hidden" id="recipeId" value="<%= recipe._id %>">
+      <textarea name="comment[body]" id="newComment" cols="40" rows="5" autofocus></textarea>
   </div>
 		<input type="submit" value="save" class="btn btn-lg btn-success">
 </form>

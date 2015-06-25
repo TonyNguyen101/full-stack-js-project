@@ -103,12 +103,20 @@ app.get('/recipes/:id/show', function (req, res){
 
 //CREATE COMMENT POST FROM AJAX FROM ONE RECIPE PAGE
 app.post('/recipes/:id/comments', function (req, res){
-	console.log(req.body.comment);
 	db.Comment.create(req.body.comment, function (err, comment){
 		if (err) {
 			console.log(err);
+			res.redirect('/recipes/' + req.params.id + '/show');
+		} else {
+			db.Recipe.findById(req.params.id, function (err, recipe){
+				//mongoose know just to push the comment's id into the recipe object
+				recipe.comments.push(comment);
+				comment.recipe = recipe._id;
+				recipe.save();
+				comment.save();
+				res.send(comment);
+			});
 		}
-		res.send(comment);
 	});
 });
 //NEW 
