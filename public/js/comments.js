@@ -9,17 +9,18 @@ $(function () {
 
 
 	//Captures the comments and packages 
-	$('#newCommentForm').click(function(event){
+	$('#newCommentForm').submit(function(event){
 		event.preventDefault();
 		var body = $('#newComment').val();
 		var data = {comment: {body: body}};
 
-
+		//send ajax to /recipes/:id/comments with the hidden recipeid from the form
 		$.ajax({
 			type: 'POST',
 			url: '/recipes/' + $('#recipeId').val() + '/comments',
 			data: data,
 		}).done(function(returnData){
+			//Receive and add to the front of the table
 			var newComment = commentHtml(returnData);
 			$('tbody').prepend(newComment);
 		});
@@ -30,3 +31,5 @@ $(function () {
 
 
 });
+
+
