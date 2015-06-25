@@ -82,7 +82,7 @@ app.get('/search/:id/show', function (req, res){
 app.post('/recipes', function (req, res){
 	db.Recipe.create(req.body.recipe, function (err, recipe){	
 		if (err) console.log(err);
-		//TODO redirect to user's page with her recipes, /user:id
+		//TODO redirect to user's page with her recipes, /user/:id
 		res.redirect('/recipes');
 	});
 });
@@ -93,8 +93,13 @@ app.get('/recipes', function (req, res){
 		res.render('recipes/index', {recipesDB: recipesDB});
 	});
 });
-//SHOW ONE RECIPE IN DB, W/ AJAX to CREATE COMMENTS
 
+//SHOW ONE RECIPE IN DB, W/ AJAX to CREATE COMMENTS
+app.get('/recipes/:id/show', function (req, res){
+	db.Recipe.findById(req.params.id, function (err, recipe){
+		res.render('recipes/show', {recipe:recipe});
+	});
+});
 //NEW 
 //EDIT
 

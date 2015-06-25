@@ -1,4 +1,4 @@
-<% include ../partials/header %>
+<% include ../partials/headermain %>
 
 <div class="container-fluid">
 
@@ -10,14 +10,9 @@
 <tbody>
 
 <% recipesDB.forEach(function(recipe){ %>
-	<tr data-url=/recipe/ "<%= recipe._id %>" /show>	
+	<tr data-url='/recipes/<%= recipe._id %>/show'>	
 		<td><img height="130" width="130" src= "<%= recipe.image %>" alt=""></td>
 		<td><%= recipe.title %></td>
-		<% recipe.ingredients.forEach(function(ingredient){ %>
-			
-			<%= ingredient.name %>
-
-		<% }) %>
 	</tr>
 <% }) %>
 

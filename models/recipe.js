@@ -6,7 +6,6 @@ var ingredientSchema = new mongoose.Schema({
 	name: String
 });
 
-
 var recipeSchema = new mongoose.Schema({
 	title: String,
 	image: String,

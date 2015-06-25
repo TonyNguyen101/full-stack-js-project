@@ -1,34 +1,25 @@
 <% include ../partials/header %>
 
-<h1>Search Show Page</h1>
+<h1>One Recipe Show Page</h1>
 
 
 
-<img height="250" width="250" src="<%= bigOvenRecipe.ImageURL %>" alt="">	
-<%= bigOvenRecipe.Title %>
+<img height="250" width="250" src="<%= recipe.image %>" alt="">	
+<%= recipe.title %>
 </br>
-<% bigOvenRecipe.Ingredients.forEach(function(ingredient){ %>
+<% recipe.ingredients.forEach(function(ingredient){ %>
 	
-	<%= ingredient.DisplayQuantity %>
-	<% if (ingredient.Unit !== null){ %>
-		<%= ingredient.Unit %>	
+	<%= ingredient.displayQuantity %>
+	<% if (ingredient.unit !== null){ %>
+		<%= ingredient.unit %>	
 	<% } %>
-	<%= ingredient.Name %>
+	<%= ingredient.name %>
 	</br>
 <% }) %>
 </br>
-<%= bigOvenRecipe.Instructions %>
+<%= recipe.instructions %>
 </br>
 
-
-<form action="/recipes/<%= bigOvenRecipe.RecipeID %>" method="POST">
-	<input type="text" name="recipe[image]" value="<%= bigOvenRecipe.ImageURL %>">
-	<input type="text" name="recipe[title]" value="<%= bigOvenRecipe.Title %>">
-	<input type="text" name="recipe[ingredients]" value="<%= bigOvenRecipe.Ingredients %>">
-	<input type="text" name="recipe[instructions]" value="<%= bigOvenRecipe.Instructions %>">
-
-	<input type="submit">
-</form>
 
 
 <% include ../partials/footer %>
