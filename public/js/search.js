@@ -5,8 +5,6 @@ $(function () {
 		return	'<tr data-url=/search/' + recipe.RecipeID + '/show>	<td><img src=' + 
 						recipe.ImageURL120 + 
 						' alt=""></td><td>' + 
-						recipe.RecipeID + 
-						'</td><td>' + 
 						recipe.Title + 
 						'</td></tr>';
 	}

@@ -100,6 +100,17 @@ app.get('/recipes/:id/show', function (req, res){
 		res.render('recipes/show', {recipe:recipe});
 	});
 });
+
+//CREATE COMMENT POST FROM AJAX FROM ONE RECIPE PAGE
+app.post('/recipes/:id/comments', function (req, res){
+	console.log(req.body.comment);
+	db.Comment.create(req.body.comment, function (err, comment){
+		if (err) {
+			console.log(err);
+		}
+		res.send(comment);
+	});
+});
 //NEW 
 //EDIT
 
