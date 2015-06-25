@@ -47,9 +47,9 @@ app.post('/search', function (req, res){
 
 //SEARCH SHOW RECIPE FROM BIGOVEN
 app.get('/search/:id/show', function (req, res){
-	var recipeId = req.params.id;
-	var url = "http://api.bigoven.com/recipe/";
-	var apiKey = "dvxK85et7PRw0l0hH7I3D9R2cFMvdPop";
+	var recipeId 		= req.params.id;
+	var url 				= "http://api.bigoven.com/recipe/";
+	var apiKey 			= "dvxK85et7PRw0l0hH7I3D9R2cFMvdPop";
 	request({
 		type: 'GET',
 		json: true,
@@ -61,12 +61,12 @@ app.get('/search/:id/show', function (req, res){
 	  } else if (!err && response.statusCode === 200) { 
 	  	//Make an recipe object and stuff it with filtered data from Big Oven
 	  	//TODO Wrap all of this into one object creation?
-	  	var bigOvenRecipeAbridged = {};
-	  	bigOvenRecipeAbridged.title = body.Title;
-	  	bigOvenRecipeAbridged.image = body.ImageURL;
-	  	bigOvenRecipeAbridged.instructions = body.Instructions;
+	  	var bigOvenRecipeAbridged 					= {};
+	  	bigOvenRecipeAbridged.title 				= body.Title;
+	  	bigOvenRecipeAbridged.image 				= body.ImageURL;
+	  	bigOvenRecipeAbridged.instructions 	= body.Instructions;
 	  	//TODO Map over the ingredients array to extract
-	  	bigOvenRecipeAbridged.ingredients = body.Ingredients.map(function(ingredient){
+	  	bigOvenRecipeAbridged.ingredients 	= body.Ingredients.map(function(ingredient){
 	  		return {
 	  			displayQuantity: 	ingredient.DisplayQuantity,
 	  			unit: 						ingredient.Unit,
@@ -80,14 +80,19 @@ app.get('/search/:id/show', function (req, res){
 
 //CREATE RECIPE FROM SEARCH RESULT
 app.post('/recipes', function (req, res){
-	db.Recipe.create(req.body.recipe, function (err, recipe){
+	db.Recipe.create(req.body.recipe, function (err, recipe){	
+		if (err) console.log(err);
 		//TODO redirect to user's page with her recipes, /user:id
 		res.redirect('/recipes');
 	});
 });
 
 //RECIPES INDEX, ALL IN DB
-
+app.get('/recipes', function (req, res){
+	db.Recipe.find({}, function (err, recipesDB){
+		res.render('recipes/index', {recipesDB: recipesDB});
+	});
+});
 //SHOW ONE RECIPE IN DB, W/ AJAX to CREATE COMMENTS
 
 //NEW 

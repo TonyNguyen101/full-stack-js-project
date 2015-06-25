@@ -1,14 +1,17 @@
 var mongoose = require('mongoose');
 
+var ingredientSchema = new mongoose.Schema({
+	unit: String,
+	displayQuantity: String,
+	name: String
+});
+
+
 var recipeSchema = new mongoose.Schema({
 	title: String,
 	image: String,
 	instructions: String,
-	ingredients: [{
-		unit: String,
-		displayQuantity: Number,
-		name: String		
-	}],
+	ingredients: [ingredientSchema],
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User" 

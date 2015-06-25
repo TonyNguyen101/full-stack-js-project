@@ -1,32 +1,29 @@
-<% include ../partials/headersearch %>
+<% include ../partials/header %>
 
 <div class="container-fluid">
 
 <thead>
-<h1>Search for Recipes <small>and add them to your notebook</small>	</h1>
+<h1>All Recipes in the DB</h1>
 </thead>
-
-<form class="form-inline" id="searchBigOvenForm">
-  <div class="form-group">
-    <label for="searchTerm">
-    	<input type="text" class="form-control" id="searchTerm" placeholder="search" autofocus>
-    </label>
-  </div>
-  <button type="submit" class="btn btn-default">Search</button>
-</form>
 
 <table class="table table-hover">
 <tbody>
 
+<% recipesDB.forEach(function(recipe){ %>
+	<tr data-url=/recipe/ "<%= recipe._id %>" /show>	
+		<td><img height="130" width="130" src= "<%= recipe.image %>" alt=""></td>
+		<td><%= recipe.title %></td>
+		<% recipe.ingredients.forEach(function(ingredient){ %>
+			
+			<%= ingredient.name %>
 
-
-
+		<% }) %>
+	</tr>
+<% }) %>
 
 
 </tbody>
 </table>
-
-
 </div>
 
 

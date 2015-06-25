@@ -24,8 +24,23 @@
 <form action="/recipes" method="POST">
 	<input type="text" name="recipe[image]" value="<%= bigOvenRecipeAbridged.image %>">
 	<input type="text" name="recipe[title]" value="<%= bigOvenRecipeAbridged.title %>">
-	<input type="text" name="recipe[ingredients]" value="<%= bigOvenRecipeAbridged.ingredients %>">
+	
+	<hr/>
+
+	<% bigOvenRecipeAbridged.ingredients.forEach(function(ingredient, index){ %>
+			<input type="text" name="recipe[ingredients][<%=index%>][unit]" value="<%= ingredient.unit %>">
+			<input type="text" name="recipe[ingredients][<%=index%>][name]" value="<%= ingredient.name %>">
+			<input type="text" name="recipe[ingredients][<%=index%>][displayQuantity]" value="<%= ingredient.displayQuantity %>">			
+			<hr/>
+		<%=  %>
+	<% }) %>
+	
+	
+
+	<!-- <input type="text" name="recipe[[ingredients]]" value="<%= bigOvenRecipeAbridged.ingredients %>"> -->
 	<input type="text" name="recipe[instructions]" value="<%= bigOvenRecipeAbridged.instructions %>">
+
+
 	<button type="submit" class="btn btn-default">Save</button>
 </form>
 
