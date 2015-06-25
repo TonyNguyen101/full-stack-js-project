@@ -45,7 +45,11 @@
 <table class="table table-hover">
 <tbody>
 
+<% recipe.comments.forEach(function(comment){ %>
+	<!-- TODO: Add display for the user of each comment -->
+	<tr> <td> <%= comment.body %> </td> </tr>
 
+<% }) %>
 
 
 </tbody>

@@ -96,9 +96,12 @@ app.get('/recipes', function (req, res){
 
 //SHOW ONE RECIPE IN DB, W/ AJAX to CREATE COMMENTS
 app.get('/recipes/:id/show', function (req, res){
-	db.Recipe.findById(req.params.id, function (err, recipe){
-		res.render('recipes/show', {recipe:recipe});
-	});
+	db.Recipe.findById(req.params.id)
+		.populate('comments')
+		.exec(function (err, recipe){
+			console.log(recipe.comments);
+			res.render('recipes/show', {recipe:recipe});	
+		});
 });
 
 //CREATE COMMENT POST FROM AJAX FROM ONE RECIPE PAGE
@@ -109,7 +112,7 @@ app.post('/recipes/:id/comments', function (req, res){
 			res.redirect('/recipes/' + req.params.id + '/show');
 		} else {
 			db.Recipe.findById(req.params.id, function (err, recipe){
-				//mongoose know just to push the comment's id into the recipe object
+				//mongoose knows just to push the comment's id into the recipe object
 				recipe.comments.push(comment);
 				comment.recipe = recipe._id;
 				recipe.save();
