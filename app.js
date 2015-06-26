@@ -6,15 +6,31 @@ var express 					= require('express'),
     morgan 						= require("morgan"),
     db 								= require("./models"),
     request						= require("request");
-/*    loginMiddleware 	= require("./middleware/loginHelper"),
+    loginMiddleware 	= require("./middleware/loginHelper");
     routeMiddleware 	= require("./middleware/routeHelper");
-    require('dotenv').load();*/
+    /*require('dotenv').load();*/
 
 app.set('view engine', 'ejs');
 app.use(methodOverride('_method'));
 app.use(morgan('tiny'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(loginMiddleware);
+
+//Make a session cookie
+app.use(session({
+	maxAge: 3600000,
+	secret: "illnevertell",
+	name: "Choco Crisp"
+}));
+
+//Signup routes - has middleware that stops you from logining in while already logged in
+app.get('/signup',/* routeMiddleware.preventLoginSignUp,*/ function (req, res){
+	res.render('users/signup');
+});
+
+
+
 
 //ROOT - All recipes, no login
 app.get('/', function (req, res){
@@ -99,7 +115,6 @@ app.get('/recipes/:id/show', function (req, res){
 	db.Recipe.findById(req.params.id)
 		.populate('comments')
 		.exec(function (err, recipe){
-			console.log(recipe.comments);
 			res.render('recipes/show', {recipe:recipe});	
 		});
 });

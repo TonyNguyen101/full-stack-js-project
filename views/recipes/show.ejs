@@ -17,26 +17,27 @@
 
 <img height="250" width="250" src="<%= recipe.image %>" alt="">	
 <%= recipe.title %>
-</br>
+<br>
 <% recipe.ingredients.forEach(function(ingredient){ %>
-	
 	<%= ingredient.displayQuantity %>
 	<% if (ingredient.unit !== null){ %>
 		<%= ingredient.unit %>	
 	<% } %>
 	<%= ingredient.name %>
-	</br>
+	<br>
 <% }) %>
-</br>
+<br>
 <%= recipe.instructions %>
-</br>
+<br>
+
+<%= recipe.comments.length - 1 %>comments 
 
 <form id="newCommentForm" action="/recipes/<%= recipe._id %>/comments" method="POST">
 	<div class="form-group">
 		<label for="comment[body]"></label>
       <input type="hidden" id="recipeId" value="<%= recipe._id %>">
-<!--       <textarea name="comment[body]" id="newComment" cols="40" rows="5" autofocus></textarea> -->
-      <input type="text" name="comment[body]" id="newComment" autofocus>
+      <textarea name="comment[body]" id="newComment" cols="40" rows="5" placeholder="add your comment"></textarea>
+      <!-- <input type="text" name="comment[body]" id="newComment"> -->
   </div>
 		<input type="submit" value="save" class="btn btn-lg btn-success">
 </form>
