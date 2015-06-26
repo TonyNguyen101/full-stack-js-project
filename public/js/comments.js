@@ -4,6 +4,8 @@ $(function () {
 	function commentHtml (comment){
 		return	'<tr><td>' + 
 						comment.body + 
+						'</td><td>' + 
+						comment.user.userName + 
 						'</td></tr>';
 	}
 

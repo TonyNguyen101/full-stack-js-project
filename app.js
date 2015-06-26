@@ -73,8 +73,11 @@ app.get('/users', function (req, res){
 //USERS SHOW with RECIPES 
 //- this thing populate right?
 app.get('/users/:id/show', function (req, res){
-	db.User.findById(req.params.id).populate('recipes', 'comments').exec(function (err, user){
-		res.render('users/show', {users:users});
+	db.User.findById(req.params.id)
+		.populate('recipes')
+		.populate('comments')
+		.exec(function (err, user){
+			res.render('users/show', {users:users});
 	});
 });
 
@@ -168,8 +171,10 @@ app.get('/recipes', routeMiddleware.ensureLoggedIn, function (req, res){
 //SHOW ONE RECIPE IN DB, W/ AJAX to CREATE COMMENTS
 app.get('/recipes/:id/show', function (req, res){
 	db.Recipe.findById(req.params.id)
+		.populate('user')
 		.populate('comments')
 		.exec(function (err, recipe){
+			console.log("this is the recipe" + recipe);
 			res.render('recipes/show', {recipe:recipe});	
 		});
 });
@@ -185,9 +190,14 @@ app.post('/recipes/:id/comments', function (req, res){
 				//mongoose knows just to push the comment's id into the recipe object
 				recipe.comments.push(comment);
 				comment.recipe = recipe._id;
+				comment.user = req.session.id;
 				recipe.save();
-				comment.save();
-				res.send(comment);
+				comment.save(function (err, comment){
+					db.Comment.findById(comment.id).populate('user').exec(function (err, comment){
+						res.send(comment);					
+					});
+				});
+				
 			});
 		}
 	});

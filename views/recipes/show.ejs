@@ -13,6 +13,8 @@
 
 <h1>One Recipe Show Page</h1>
 
+<!-- TODO make the user name a link to look at the user's personal page -->
+<h3>by <%= recipe.user.userName %></h3>
 
 
 <img height="250" width="250" src="<%= recipe.image %>" alt="">	
@@ -37,7 +39,6 @@
 		<label for="comment[body]"></label>
       <input type="hidden" id="recipeId" value="<%= recipe._id %>">
       <textarea name="comment[body]" id="newComment" cols="40" rows="5" placeholder="add your comment"></textarea>
-      <!-- <input type="text" name="comment[body]" id="newComment"> -->
   </div>
 		<input type="submit" value="save" class="btn btn-lg btn-success">
 </form>
@@ -47,7 +48,10 @@
 <tbody>
 
 <% for (var i = recipe.comments.length - 1; i >= 0; i--) { %>
-	<tr> <td> <%=	recipe.comments[i].body %> </td> </tr>
+	<tr> 
+		<td><%=	recipe.comments[i].body %></td> 
+		<td><%= recipe.comments[i].user %></td>	
+	</tr>
 	<!-- TODO: Add display for the user of each comment -->
 <% }; %>
 
