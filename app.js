@@ -28,11 +28,36 @@ app.use(session({
 app.get('/signup',/* routeMiddleware.preventLoginSignUp,*/ function (req, res){
 	res.render('users/signup');
 });
+app.post('/signup', function (req, res){
+	db.User.create(req.body.user, function (err, user){
+		if (user){
+			req.login(user);
+			res.redirect('/recipes');
+		} else {
+			//TODO handle some errs
+			res.render('users/signup');
+		}
+	});
+});
+
+//Login Routes
+app.get('/login', function (req, res){
+	res.render('users/login');
+});
+app.post('/login', function (req, res){
+	db.User.authenticate(req.body.user, function (err, user){
+		if (!err && user !== null) {
+			req.login(user);
+			res.redirect('/recipes');
+		} else {
+			//TODO handle the other errs
+			res.render('/login');
+		}
+	});
+});
 
 
-
-
-//ROOT - All recipes, no login
+//ROOT - All DB recipes, no login
 app.get('/', function (req, res){
 	res.redirect('/recipes');
 });
