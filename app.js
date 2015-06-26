@@ -51,8 +51,9 @@ app.post('/login', function (req, res){
 			req.login(user);
 			res.redirect('/recipes');
 		} else {
+			console.log(err);
 			//TODO handle the other errs
-			res.render('/login');
+			res.redirect('/login');
 		}
 	});
 });
@@ -71,11 +72,9 @@ app.get('/users', function (req, res){
 });
 
 //USERS SHOW with RECIPES 
-//- this thing populate right?
 app.get('/users/:id/show', function (req, res){
 	db.User.findById(req.params.id)
-		.populate('recipes')
-		.populate('comments')
+		.populate('recipes comments')
 		.exec(function (err, user){
 			res.render('users/show', {users:users});
 	});
@@ -145,6 +144,7 @@ app.post('/recipes', routeMiddleware.ensureLoggedIn, function (req, res){
 			console.log(err);
 			res.redirect('/recipes');
 		}	else {
+			//Find the current logged in user and push the recipeID into its recipe array
 			db.User.findById(req.session.id, function (err, user){
 				user.recipes.push(recipe);
 				recipe.user = user._id;
@@ -152,10 +152,6 @@ app.post('/recipes', routeMiddleware.ensureLoggedIn, function (req, res){
 				recipe.save();
 				//TODO redirect to user's page with her recipes, /user/:id
 				res.redirect('/recipes');
-				
-				//Remove when I feel comfortable doing so
-				console.log("This is da user" + user);
-				console.log("Dis is da recipe" + recipe);
 			});
 		}
 	});
@@ -171,11 +167,18 @@ app.get('/recipes', routeMiddleware.ensureLoggedIn, function (req, res){
 //SHOW ONE RECIPE IN DB, W/ AJAX to CREATE COMMENTS
 app.get('/recipes/:id/show', function (req, res){
 	db.Recipe.findById(req.params.id)
-		.populate('user')
-		.populate('comments')
+		//populate the recipe w/ the user and comments
+		.populate('user comments')
 		.exec(function (err, recipe){
-			console.log("this is the recipe" + recipe);
-			res.render('recipes/show', {recipe:recipe});	
+			//Populate the arg1:recipe.comments.user with data from the User model 
+			db.Recipe
+				.populate(recipe, {
+					path: 'comments.user',
+					model: 'User'
+				}, 
+				function (err, recipe) {
+					res.render('recipes/show', {recipe:recipe});		
+			});
 		});
 });
 
@@ -187,17 +190,18 @@ app.post('/recipes/:id/comments', function (req, res){
 			res.redirect('/recipes/' + req.params.id + '/show');
 		} else {
 			db.Recipe.findById(req.params.id, function (err, recipe){
-				//mongoose knows just to push the comment's id into the recipe object
+				//mongoose knows just to push the comment's id into the recipe comments array
 				recipe.comments.push(comment);
 				comment.recipe = recipe._id;
 				comment.user = req.session.id;
 				recipe.save();
 				comment.save(function (err, comment){
-					db.Comment.findById(comment.id).populate('user').exec(function (err, comment){
-						res.send(comment);					
+					db.Comment.findById(comment.id)
+						.populate('user')
+						.exec(function (err, comment){
+							res.send(comment);					
 					});
 				});
-				
 			});
 		}
 	});

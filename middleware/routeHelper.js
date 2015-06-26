@@ -7,7 +7,7 @@ var routeHelpers = {
 		if (req.session.id !== null && req.session.id !== undefined){
 			return next();
 		} else {
-			res.redirect('/users/login');
+			res.redirect('/login');
 		}
 	},
 	//Stops user from messing with recipes and comments that are not his.
