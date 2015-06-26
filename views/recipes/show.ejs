@@ -30,7 +30,7 @@
 <%= recipe.instructions %>
 <br>
 
-<%= recipe.comments.length - 1 %>comments 
+<%= recipe.comments.length %> comments 
 
 <form id="newCommentForm" action="/recipes/<%= recipe._id %>/comments" method="POST">
 	<div class="form-group">

@@ -15,7 +15,6 @@ app.use(methodOverride('_method'));
 app.use(morgan('tiny'));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true}));
-app.use(loginMiddleware);
 
 //Make a session cookie
 app.use(session({
@@ -23,9 +22,11 @@ app.use(session({
 	secret: "illnevertell",
 	name: "Choco Crisp"
 }));
+//Put 
+app.use(loginMiddleware);
 
 //Signup routes - has middleware that stops you from logining in while already logged in
-app.get('/signup',/* routeMiddleware.preventLoginSignUp,*/ function (req, res){
+app.get('/signup', routeMiddleware.preventLoginSignUp, function (req, res){
 	res.render('users/signup');
 });
 app.post('/signup', function (req, res){
@@ -56,10 +57,25 @@ app.post('/login', function (req, res){
 	});
 });
 
-
 //ROOT - All DB recipes, no login
 app.get('/', function (req, res){
+	//TODO redirect to choice bwn bs or build recipe book?
 	res.redirect('/recipes');
+});
+
+//USERS INDEX
+app.get('/users', function (req, res){
+	db.User.find({}, function (err, usersDB){
+		res.render('users/index', {usersDB: usersDB});
+	});
+});
+
+//USERS SHOW with RECIPES 
+//- this thing populate right?
+app.get('/users/:id/show', function (req, res){
+	db.User.findById(req.params.id).populate('recipes', 'comments').exec(function (err, user){
+		res.render('users/show', {users:users});
+	});
 });
 
 //SEARCH INDEX
@@ -120,16 +136,30 @@ app.get('/search/:id/show', function (req, res){
 });
 
 //CREATE RECIPE FROM SEARCH RESULT
-app.post('/recipes', function (req, res){
+app.post('/recipes', routeMiddleware.ensureLoggedIn, function (req, res){
 	db.Recipe.create(req.body.recipe, function (err, recipe){	
-		if (err) console.log(err);
-		//TODO redirect to user's page with her recipes, /user/:id
-		res.redirect('/recipes');
+		if (err) { 
+			console.log(err);
+			res.redirect('/recipes');
+		}	else {
+			db.User.findById(req.session.id, function (err, user){
+				user.recipes.push(recipe);
+				recipe.user = user._id;
+				user.save();
+				recipe.save();
+				//TODO redirect to user's page with her recipes, /user/:id
+				res.redirect('/recipes');
+				
+				//Remove when I feel comfortable doing so
+				console.log("This is da user" + user);
+				console.log("Dis is da recipe" + recipe);
+			});
+		}
 	});
 });
 
 //RECIPES INDEX, ALL IN DB
-app.get('/recipes', function (req, res){
+app.get('/recipes', routeMiddleware.ensureLoggedIn, function (req, res){
 	db.Recipe.find({}, function (err, recipesDB){
 		res.render('recipes/index', {recipesDB: recipesDB});
 	});

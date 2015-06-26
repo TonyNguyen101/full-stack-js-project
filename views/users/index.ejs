@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<!-- Bootstrap: Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/users.js"></script> 
+</head>
+<body>
+
+<h1>all uzers</h1>
+
+
+<% usersDB.forEach(function(user){ %>
+
+<table class="table table-hover">
+<tbody>
+
+<tr data-url='/users/<%= user._id %>/show'>	
+	<td><img src="<%= user.picture %>" alt="http://pcwww.liv.ac.uk/earth/sust/blankface_.jpg"></td>	
+	<td><%= user.userName %></td>
+	<td><%= user.bio  %></td>
+</tr>
+</tbody>
+</table>
+
+<% }) %>
+
+
+
+
+
+
+
+
+
+
+
+
+<% include ../partials/footer %>
