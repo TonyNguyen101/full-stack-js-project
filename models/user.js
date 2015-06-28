@@ -51,7 +51,7 @@ userSchema.statics.authenticate = function (formData, callback){
 	});
 };
 
-userSchema.method.checkPassword = function (password, callback){
+userSchema.methods.checkPassword = function (password, callback){
 	//Refers the this specific instance of the class
 	var user = this;
 	bcrypt.compare(password, user.password, function (err, isMatch){

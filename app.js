@@ -4,6 +4,7 @@ var express 					= require('express'),
     methodOverride 		= require("method-override"),
     session 					= require("cookie-session"),
     morgan 						= require("morgan"),
+    bcrypt						= require("bcrypt"),
     db 								= require("./models"),
     request						= require("request");
     loginMiddleware 	= require("./middleware/loginHelper");
@@ -18,11 +19,11 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 //Make a session cookie
 app.use(session({
-	maxAge: 3600000,
+	maxAge: 36000000,
 	secret: "illnevertell",
 	name: "Choco Crisp"
 }));
-//Put 
+//Put after session call
 app.use(loginMiddleware);
 
 //Signup routes - has middleware that stops you from logining in while already logged in
@@ -76,7 +77,8 @@ app.get('/users/:id/show', function (req, res){
 	db.User.findById(req.params.id)
 		.populate('recipes comments')
 		.exec(function (err, user){
-			res.render('users/show', {users:users});
+			console.log("This is the user", user.recipes);
+			res.render('users/show', {user:user});
 	});
 });
 
@@ -138,17 +140,19 @@ app.get('/search/:id/show', function (req, res){
 });
 
 //CREATE RECIPE FROM SEARCH RESULT
-app.post('/recipes', routeMiddleware.ensureLoggedIn, function (req, res){
+app.post('/recipes', /*routeMiddleware.ensureLoggedIn,*/ function (req, res){
 	db.Recipe.create(req.body.recipe, function (err, recipe){	
 		if (err) { 
 			console.log(err);
 			res.redirect('/recipes');
 		}	else {
 			//Find the current logged in user and push the recipeID into its recipe array
-			db.User.findById(req.session.id, function (err, user){
-				user.recipes.push(recipe);
-				recipe.user = user._id;
+			//NEED TO FIX, recipeID doesn't get saved into the user's recipe array. appears inside just after creation, is not saved.
+			db.User.findById(req.session.id, function (err, user){	
+				user.recipes.push(recipe._id);
+				console.log("this is the user with a recipe in it", user);
 				user.save();
+				recipe.user = user._id;
 				recipe.save();
 				//TODO redirect to user's page with her recipes, /user/:id
 				res.redirect('/recipes');
