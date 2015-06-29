@@ -222,7 +222,18 @@ app.post('/recipes/:id/comments', function (req, res){
 
 //UPDATE
 
-//DESTROY
+//DESTROY RECIPE
+app.delete('/recipes/:id', function (req,res) {
+  db.Recipe.findByIdAndRemove(req.params.id, function (err, comment) {
+    if(err) {
+      console.log(err);
+      res.redirect('/recipes');
+    }
+    else {
+      res.redirect('/recipes');
+    }
+  });
+});
 
 //ERROR
 app.get('*', function(req,res){

@@ -32,7 +32,7 @@
 <% } %>
 
 <img height="250" width="250" src="<%= recipe.image %>" alt="">	
-
+<br>
 <% recipe.ingredients.forEach(function(ingredient){ %>
 	<%= ingredient.displayQuantity %>
 	<% if (ingredient.unit !== null){ %>
@@ -56,6 +56,9 @@
 		<input type="submit" value="save" class="btn btn-lg btn-success">
 </form>
 
+<form action="/recipes/<%= recipe._id %>?_method=delete" method="POST" style="float:right;">
+	<input type="submit" class="ui red button"value="Delete">
+</form>
 
 <table class="table table-striped">
 <tbody>
