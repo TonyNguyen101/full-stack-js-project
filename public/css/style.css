@@ -17,6 +17,7 @@ img {
     background-color: rgb(38,129,206); 
     width: 100%;
     height: 70px; 
+    /*position: fixed;*/
 }
 .banner-content {
     color: white;

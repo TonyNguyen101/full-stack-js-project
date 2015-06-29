@@ -1,9 +1,23 @@
-<% include ../partials/header %>
+<% include ../partials/headermain %>
 <h1>show 1 user</h1>
 
-
-	<%= user.recipes %>
 	<%= user.userName %>
+	<br>
+
+
+<table class="table table-hover">
+<tbody>
+
+<% user.recipes.forEach(function(recipe){ %>
+	<tr data-url='/recipes/<%= recipe._id %>/show'>	
+		<td><img height="130" width="130" src= "<%= recipe.image %>" alt=""></td>
+		<td><%= recipe.title %></td>
+	</tr>
+<% }) %>
+
+
+</tbody>
+</table>
 
 
 <% include ../partials/footer %>
