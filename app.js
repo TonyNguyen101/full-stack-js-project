@@ -35,7 +35,7 @@ app.post('/signup', function (req, res){
 			req.login(user);
 			res.redirect('/recipes');
 		} else {
-			//TODO handle some errs
+			alert('Sorry, that user name is already taken');
 			res.render('users/signup');
 		}
 	});
@@ -79,7 +79,7 @@ app.get('/users', function (req, res){
 //USERS SHOW with RECIPES 
 app.get('/users/:id/show', function (req, res){
 	db.User.findById(req.params.id)
-		.populate('recipes', 'comments')
+		.populate('recipes comments')
 		.exec(function (err, user){
 			console.log("This is the user recipes", user.recipes);
 			res.render('users/show', {user:user});
@@ -95,6 +95,7 @@ app.get('/search', function (req, res){
 app.post('/search', function (req, res){
 	var searchTerm = req.body.term.searchTerm;
 	var url = "https://api.bigoven.com/recipes?pg=1&rpp=25&title_kw=";
+	//apiKey is in the ignored .env
 	var apiKey = process.env.DB_BIGOVEN_PASS;
 	request({
 		type: 'GET',
@@ -114,6 +115,7 @@ app.post('/search', function (req, res){
 app.get('/search/:id/show', function (req, res){
 	var recipeId 		= req.params.id;
 	var url 				= "https://api.bigoven.com/recipe/";
+	//apiKey is in the ignored .env
 	var apiKey 			= process.env.DB_BIGOVEN_PASS;
 	request({
 		type: 'GET',
@@ -149,27 +151,24 @@ app.post('/recipes', /*routeMiddleware.ensureLoggedIn,*/ function (req, res){
 		if (err) { 
 			console.log(err);
 			res.redirect('/recipes');
-		}	else {
-			//Find the current logged in user and push the recipeID into its recipe array
-			//NEED TO FIX, recipeID doesn't get saved into the user's recipe array. appears inside just after creation, is not saved.
-			db.User.findById(req.session.id, function (err, user){	
-				user.recipes.push(recipe);
-				console.log("this is the user with a recipe in it before saving", user);
-				user.save(function (err) {
-					console.log("this is the user with a recipe in it after saving", user);	
-    			if (err) return handleError(err);
-    		});
-				recipe.user = user._id;
-				recipe.save();
+		}
+		//Find the current logged in user and push the recipeID into its recipe array
+		db.User.findById(req.session.id, function (err, user){	
+			if (err) throw (err);
+			user.recipes.push(recipe);
+			recipe.user = user._id;
+			recipe.save();
+			user.save(function (err) {
+  			if (err) throw (err);
 				//TODO redirect to user's page with her recipes, /user/:id
 				res.redirect('/recipes');
-			});
-		}
+  		});
+		});
 	});
 });
 
 //RECIPES INDEX, ALL IN DB
-app.get('/recipes', routeMiddleware.ensureLoggedIn, function (req, res){
+app.get('/recipes', function (req, res){
 	db.Recipe.find({}, function (err, recipesDB){
 		res.render('recipes/index', {recipesDB: recipesDB});
 	});
@@ -194,7 +193,7 @@ app.get('/recipes/:id/show', function (req, res){
 });
 
 //CREATE COMMENT POST FROM AJAX FROM ONE RECIPE PAGE
-app.post('/recipes/:id/comments', function (req, res){
+app.post('/recipes/:id/comments', routeMiddleware.ensureLoggedIn, function (req, res){
 	db.Comment.create(req.body.comment, function (err, comment){
 		if (err) {
 			console.log(err);
@@ -203,6 +202,7 @@ app.post('/recipes/:id/comments', function (req, res){
 			db.Recipe.findById(req.params.id, function (err, recipe){
 				//mongoose knows just to push the comment's id into the recipe comments array
 				recipe.comments.push(comment);
+				console.log("This is the recipe after the comment push", recipe);
 				comment.recipe = recipe._id;
 				comment.user = req.session.id;
 				recipe.save();
