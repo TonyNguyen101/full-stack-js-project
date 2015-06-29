@@ -238,6 +238,6 @@ app.get('*', function(req,res){
   res.render('errors/404');
 });
 
-app.listen(process.env.HOST || 3000, function(){
+app.listen(process.env.PORT || 3000, function(){
   console.log("Server is listening on port 3000");
 });
