@@ -8,7 +8,7 @@ var express 					= require('express'),
     request						= require("request");
     loginMiddleware 	= require("./middleware/loginHelper");
     routeMiddleware 	= require("./middleware/routeHelper");
-    /*require('dotenv').load();*/
+    require('dotenv').load();
 
 app.set('view engine', 'ejs');
 app.use(methodOverride('_method'));
@@ -79,9 +79,9 @@ app.get('/users', function (req, res){
 //USERS SHOW with RECIPES 
 app.get('/users/:id/show', function (req, res){
 	db.User.findById(req.params.id)
-		.populate('recipes comments')
+		.populate('recipes', 'comments')
 		.exec(function (err, user){
-			console.log("This is the user", user.recipes);
+			console.log("This is the user recipes", user.recipes);
 			res.render('users/show', {user:user});
 	});
 });
@@ -94,12 +94,12 @@ app.get('/search', function (req, res){
 //SEARCH BIGOVEN w/AJAX from Search Index page
 app.post('/search', function (req, res){
 	var searchTerm = req.body.term.searchTerm;
-	var url = "http://api.bigoven.com/recipes?pg=1&rpp=25&title_kw=";
-	var apiKey = "&api_key=dvxK85et7PRw0l0hH7I3D9R2cFMvdPop";
+	var url = "https://api.bigoven.com/recipes?pg=1&rpp=25&title_kw=";
+	var apiKey = process.env.DB_BIGOVEN_PASS;
 	request({
 		type: 'GET',
 		json: true,
-		uri: url + searchTerm + apiKey
+		uri: url + searchTerm + "&api_key=" + apiKey
 	}, 
 	function (err, response, body){
 		if (err) {
@@ -113,8 +113,8 @@ app.post('/search', function (req, res){
 //SEARCH SHOW RECIPE FROM BIGOVEN
 app.get('/search/:id/show', function (req, res){
 	var recipeId 		= req.params.id;
-	var url 				= "http://api.bigoven.com/recipe/";
-	var apiKey 			= "dvxK85et7PRw0l0hH7I3D9R2cFMvdPop";
+	var url 				= "https://api.bigoven.com/recipe/";
+	var apiKey 			= process.env.DB_BIGOVEN_PASS;
 	request({
 		type: 'GET',
 		json: true,
@@ -217,13 +217,11 @@ app.post('/recipes/:id/comments', function (req, res){
 		}
 	});
 });
-//NEW 
-//EDIT
 
-//UPDATE
+//TODO RECIPE UPDATE
 
 //DESTROY RECIPE
-app.delete('/recipes/:id', function (req,res) {
+app.delete('/recipes/:id', /*routeMiddleware.ensureCorrectUserRecipe,*/ function (req,res) {
   db.Recipe.findByIdAndRemove(req.params.id, function (err, comment) {
     if(err) {
       console.log(err);

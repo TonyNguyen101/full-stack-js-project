@@ -3,9 +3,10 @@
 <h1>Search Show Page</h1>
 
 
-
+<h2><%= bigOvenRecipeAbridged.title %></h2>
+<br>
 <img height="250" width="250" src="<%= bigOvenRecipeAbridged.image %>" alt="">	
-<%= bigOvenRecipeAbridged.title %>
+
 </br>
 <% bigOvenRecipeAbridged.ingredients.forEach(function(ingredient){ %>
 	
@@ -22,14 +23,14 @@
 
 
 <form action="/recipes" method="POST">
-	<input type="text" name="recipe[image]" value="<%= bigOvenRecipeAbridged.image %>">
-	<input type="text" name="recipe[title]" value="<%= bigOvenRecipeAbridged.title %>">
-	<input type="text" name="recipe[instructions]" value="<%= bigOvenRecipeAbridged.instructions %>">
+	<input type="hidden" name="recipe[image]" value="<%= bigOvenRecipeAbridged.image %>">
+	<input type="hidden" name="recipe[title]" value="<%= bigOvenRecipeAbridged.title %>">
+	<input type="hidden" name="recipe[instructions]" value="<%= bigOvenRecipeAbridged.instructions %>">
 
 	<% bigOvenRecipeAbridged.ingredients.forEach(function(ingredient, index){ %>
-		<input type="text" name="recipe[ingredients][<%=index%>][unit]" value="<%= ingredient.unit %>">
-		<input type="text" name="recipe[ingredients][<%=index%>][name]" value="<%= ingredient.name %>">
-		<input type="text" name="recipe[ingredients][<%=index%>][displayQuantity]" value="<%= ingredient.displayQuantity %>">			
+		<input type="hidden" name="recipe[ingredients][<%=index%>][unit]" value="<%= ingredient.unit %>">
+		<input type="hidden" name="recipe[ingredients][<%=index%>][name]" value="<%= ingredient.name %>">
+		<input type="hidden" name="recipe[ingredients][<%=index%>][displayQuantity]" value="<%= ingredient.displayQuantity %>">			
 	<% }) %>
 	
 	
