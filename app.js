@@ -4,7 +4,6 @@ var express 					= require('express'),
     methodOverride 		= require("method-override"),
     session 					= require("cookie-session"),
     morgan 						= require("morgan"),
-    bcrypt						= require("bcrypt"),
     db 								= require("./models"),
     request						= require("request");
     loginMiddleware 	= require("./middleware/loginHelper");
@@ -57,6 +56,11 @@ app.post('/login', function (req, res){
 			res.redirect('/login');
 		}
 	});
+});
+//Logout Route
+app.get('/logout', function (req, res){
+	req.logout();
+	res.redirect('/recipes');
 });
 
 //ROOT - All DB recipes, no login
@@ -149,9 +153,12 @@ app.post('/recipes', /*routeMiddleware.ensureLoggedIn,*/ function (req, res){
 			//Find the current logged in user and push the recipeID into its recipe array
 			//NEED TO FIX, recipeID doesn't get saved into the user's recipe array. appears inside just after creation, is not saved.
 			db.User.findById(req.session.id, function (err, user){	
-				user.recipes.push(recipe._id);
-				console.log("this is the user with a recipe in it", user);
-				user.save();
+				user.recipes.push(recipe);
+				console.log("this is the user with a recipe in it before saving", user);
+				user.save(function (err) {
+					console.log("this is the user with a recipe in it after saving", user);	
+    			if (err) return handleError(err);
+    		});
 				recipe.user = user._id;
 				recipe.save();
 				//TODO redirect to user's page with her recipes, /user/:id
