@@ -27,7 +27,7 @@ $(function () {
 			$('tr').remove();
 			//Iterate of the returned array from BigOven
 			returnData.Results.forEach(function(recipe){ 
-				if (recipe.ImageURL !== "http://redirect.bigoven.com/pics/recipe-no-image.jpg") {
+				if (recipe.ImageURL !== "https://redirect.bigoven.com/pics/recipe-no-image.jpg") {
 					var newRecipe = recipeHtml(recipe);
 					//add to the table body
 					$('tbody').append(newRecipe);	
