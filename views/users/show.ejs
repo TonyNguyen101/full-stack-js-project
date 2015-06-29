@@ -1,11 +1,15 @@
 <% include ../partials/headermain %>
 <h1>show 1 user</h1>
-
-	<%= user.userName %>
-	<br>
-
-
 <table class="table table-hover">
+	
+<thead>
+	<tr>
+		<td><img height="150" src="<%= user.picture %>" alt=""></td>
+		<td><%= user.userName %> <br> <%= user.bio %>  </td>
+	</tr>
+</thead>
+
+
 <tbody>
 
 <% user.recipes.forEach(function(recipe){ %>
