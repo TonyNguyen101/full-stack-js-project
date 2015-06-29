@@ -26,12 +26,13 @@
 <h1>One Recipe Show Page</h1>
 
 <!-- TODO make the user name a link to look at the user's personal page -->
+<h2>	<%= recipe.title %></h2>
+<% if (recipe.user) { %>
 <h3>by <%= recipe.user.userName %></h3>
-
+<% } %>
 
 <img height="250" width="250" src="<%= recipe.image %>" alt="">	
-<%= recipe.title %>
-<br>
+
 <% recipe.ingredients.forEach(function(ingredient){ %>
 	<%= ingredient.displayQuantity %>
 	<% if (ingredient.unit !== null){ %>
