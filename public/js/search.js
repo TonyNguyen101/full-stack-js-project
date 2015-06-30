@@ -23,8 +23,6 @@ $(function () {
 			data: data,
 			dataType: 'json'
 		}).done(function(returnData){
-
-			console.log("done!",returnData )
 			//Remove the previous search results
 			$('tr').remove();
 			//Iterate of the returned array from BigOven
