@@ -4,9 +4,9 @@ $(function () {
 	function recipeHtml (recipe){
 		return	'<tr data-url=/search/' + recipe.RecipeID + '/show>	<td><img src=' + 
 						recipe.ImageURL120 + 
-						' alt=""></td><td>' + 
+						' alt=""></td><td><h3>' + 
 						recipe.Title + 
-						'</td></tr>';
+						'</h3></td></tr>';
 	}
 
 	//The BigOven Search Query

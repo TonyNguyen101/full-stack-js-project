@@ -146,7 +146,7 @@ app.get('/search/:id/show', function (req, res){
 });
 
 //CREATE RECIPE FROM SEARCH RESULT
-app.post('/recipes', /*routeMiddleware.ensureLoggedIn,*/ function (req, res){
+app.post('/recipes', routeMiddleware.ensureLoggedIn, function (req, res){
 	db.Recipe.create(req.body.recipe, function (err, recipe){	
 		if (err) { 
 			console.log(err);

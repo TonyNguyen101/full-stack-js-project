@@ -4,7 +4,7 @@
 	
 <thead>
 	<tr>
-		<td><img height="130" src="<%= user.picture %>" alt=""></td>
+		<td><img height="120" src="<%= user.picture %>" alt=""></td>
 		<td><h1>	<%= user.userName %></h1> <br> <%= user.bio %>  </td>
 	</tr>
 </thead>
@@ -15,7 +15,7 @@
 <% user.recipes.forEach(function(recipe){ %>
 	<tr data-url='/recipes/<%= recipe._id %>/show'>	
 		<td><img height="130" width="130" src= "<%= recipe.image %>" alt=""></td>
-		<td><%= recipe.title %></td>
+		<td><h3> <%= recipe.title %></h3></td>
 	</tr>
 <% }) %>
 
