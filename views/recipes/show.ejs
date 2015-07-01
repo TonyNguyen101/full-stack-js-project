@@ -15,17 +15,11 @@
     <a href="/">
         <img src="https://www.thelogomix.com/files/imagecache/240/ChefPen.jpg" id="logo-banner" alt="ADAmap">
     </a>
-    <a href="/">
-        <div class="banner-content" id="photo-div" style='background-image: url(/assets/DefaultPersonPhoto.png);'></div>
-    </a>
 		<a href="/search" class="banner-content" id="banner-search"> Search</a>
     <a href="/logout" class="banner-content" id="banner-logout"> Logout</a>
     <a href="/login" class="banner-content" id="banner-login"> Login</a>
 </div>
 
-<h1>One Recipe Show Page</h1>
-
-<!-- TODO make the user name a link to look at the user's personal page -->
 <h2>	<%= recipe.title %></h2>
 <% if (recipe.user) { %>
 <a href="/users/<%= recipe.user._id %>/show" >by <%= recipe.user.userName %> </a>
@@ -41,11 +35,13 @@
 	<%= ingredient.name %>
 	<br>
 <% }) %>
+
+
 <br>
 <%= recipe.instructions %>
 <br>
 
-<%= recipe.comments.length %> comments 
+<h6>	<%= recipe.comments.length %> comments </h6>
 
 <form id="newCommentForm" action="/recipes/<%= recipe._id %>/comments" method="POST">
 	<div class="form-group">
@@ -65,11 +61,12 @@
 
 <% for (var i = recipe.comments.length - 1; i >= 0; i--) { %>
 	<tr> 
-		<td><%=	recipe.comments[i].body %></td> 
-		
 		<% if (recipe.comments[i].user){ %>
-		<td><%= recipe.comments[i].user.userName %></td>	
+		<td> <h4> <%= recipe.comments[i].user.userName %> </h4>	
 		<%	} %>
+		<%=	recipe.comments[i].body %></td> 
+		
+	
 	</tr>
 <% }; %>
 
